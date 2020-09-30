@@ -16,7 +16,7 @@ public typealias TensorBuilder = (MPSGraph, MPSGraphTensor) -> MPSGraphTensor
 
 public extension MPSGraph {
 
-    func sequence(input: MPSGraphTensor, _ builders: TensorBuilder...) -> MPSGraphTensor {
+    public func sequence(input: MPSGraphTensor, _ builders: TensorBuilder...) -> MPSGraphTensor {
         builders.reduce(input) { tensor, builder in
             builder(self, tensor)
         }
