@@ -25,4 +25,6 @@ open class MPSGModel {
         }
     }
     
+    public init() {}
+    
 }
