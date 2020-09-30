@@ -11,7 +11,7 @@ import MetalPerformanceShaders
 import MetalPerformanceShadersGraph
 
 @available(macOS 11, iOS 14, *)
-public class MPSGModel {
+open class MPSGModel {
     public typealias TensorBuilder = (MPSGraph, MPSGraphTensor) -> MPSGraphTensor
     
     public func debug(_ graph: MPSGraph, _ input: MPSGraphTensor) -> MPSGraphTensor {
