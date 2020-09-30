@@ -6,14 +6,13 @@
 //
 
 import Foundation
-
-#if os(iOS)
-
 import MetalPerformanceShaders
 import MetalPerformanceShadersGraph
 
+@available(macOS 11, iOS 14, *)
 public typealias TensorBuilder = (MPSGraph, MPSGraphTensor) -> MPSGraphTensor
 
+@available(macOS 11, iOS 14, *)
 public extension MPSGraph {
 
     public func sequence(input: MPSGraphTensor, _ builders: TensorBuilder...) -> MPSGraphTensor {
@@ -23,5 +22,3 @@ public extension MPSGraph {
     }
 
 }
-
-#endif
