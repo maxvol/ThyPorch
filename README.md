@@ -1,3 +1,4 @@
 # ThyPorch
 
-A description of this package.
+Facade for iOS14+ ML frameworks.
+
