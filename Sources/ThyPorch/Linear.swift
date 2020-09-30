@@ -16,11 +16,11 @@ public struct Linear {
     let in_features: Int
     let out_features: Int
     var weight: [Float] = [] // shape: (out_features, in_features), init as U(-√k, √k) where k = 1/in_features
-    let bias: bool = true // shape: (out_features), init as U(-√k, √k) where k = 1/in_features
+    let bias: Bool // shape: (out_features), init as U(-√k, √k) where k = 1/in_features
      
-    public init(_ in_features: Int, _ out_features: Int, _ bias: bool = true) {
+    public init(_ in_features: Int, _ out_features: Int, _ bias: Bool = true) {
         self.in_features = in_features
-        self.out_features = output_features
+        self.out_features = out_features
         self.bias = bias
     }
 }

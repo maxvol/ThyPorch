@@ -6,6 +6,9 @@
 //
 
 import Foundation
+
+#if os(iOS)
+
 import MetalPerformanceShaders
 import MetalPerformanceShadersGraph
 
@@ -20,3 +23,5 @@ public extension MPSGraph {
     }
 
 }
+
+#endif
