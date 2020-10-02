@@ -1,5 +1,5 @@
 //
-//  MPSGShape.swift
+//  Shape.swift
 //  
 //
 //  Created by Maxim Volgin on 02/10/2020.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum MPSGShape {
+public enum Shape {
     // parameters
     case C(Int)
     case IO(Int, Int)
@@ -16,19 +16,12 @@ public enum MPSGShape {
     // data
     case NCHW(Int, Int, Int, Int) // TensorFlow
     case NHWC(Int, Int, Int, Int) // PyTorch
-    
-    //case CHW
-    //case HWC
-    //case HW
+    case CHW(Int, Int, Int)
+    case HWC(Int, Int, Int)
+    case HW(Int, Int)
 }
 
-public extension MPSGShape {
-    
-    var toArrayNSNumber: [NSNumber] {
-        get {
-            toArrayInt.map { $0 as NSNumber }
-        }
-    }
+public extension Shape {
     
     var toArrayInt: [Int] {
         get {
@@ -47,8 +40,13 @@ public extension MPSGShape {
                 return [N, C, H, W]
             case .NHWC(let N, let H, let W, let C):
                 return [N, H, W, C]
+            case .CHW(let C, let H, let W):
+                return [C, H, W]
+            case .HWC(let H, let W, let C):
+                return [H, W, C]
+            case .HW(let H, let W):
+                return [H, W]
             }
-
         }
     }
     
