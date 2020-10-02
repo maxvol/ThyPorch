@@ -24,13 +24,13 @@ public enum MPSGShape {
 
 public extension MPSGShape {
     
-    var arrayNSNumber: [NSNumber] {
+    var toArrayNSNumber: [NSNumber] {
         get {
-            arrayInt.map { $0 as NSNumber }
+            toArrayInt.map { $0 as NSNumber }
         }
     }
     
-    var arrayInt: [Int] {
+    var toArrayInt: [Int] {
         get {
             switch self {
             // parameters
@@ -63,7 +63,7 @@ public extension MPSGShape {
             case .IO(_, _):
                 fallthrough
             case .C(_):
-                return arrayInt.reduce(1, *)
+                return toArrayInt.reduce(1, *)
             // data
             default:
                 return 0
