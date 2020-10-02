@@ -14,12 +14,13 @@ import MetalPerformanceShadersGraph
 public protocol MPSGModel {
     typealias TensorBuilder = (MPSGraph, MPSGraphTensor) -> MPSGraphTensor
     typealias Target = (tensors: [MPSGraphTensor], operations: [MPSGraphOperation])
+    typealias TargetTuple = (inference: Target, training: Target)
     
     func debug(_ graph: MPSGraph, _ inputTensor: MPSGraphTensor) -> MPSGraphTensor
     
     func sequence(graph: MPSGraph, inputTensor: MPSGraphTensor, _ builders: TensorBuilder...) -> MPSGraphTensor
     
-    func build(graph: MPSGraph, inputTensor: MPSGraphTensor, labelTensor: MPSGraphTensor) -> (Target, Target)
+    func build(graph: MPSGraph, inputTensor: MPSGraphTensor, labelTensor: MPSGraphTensor) -> TargetTuple
     
 }
 
