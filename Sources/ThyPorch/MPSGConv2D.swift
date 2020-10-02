@@ -23,7 +23,7 @@ public extension Conv2D {
                                           weightsLayout: weightsLayout)
     }
     
-    func toWeightsLayout(channelCount: Int, filterCount: Int, weightsLayout: MPSGraphTensorNamedDataLayout) -> MPSGShape {
+    func toWeightsShape(channelCount: Int, filterCount: Int, weightsLayout: MPSGraphTensorNamedDataLayout) -> MPSGShape {
         switch weightsLayout {
         case .HWIO:
             return .HWIO(kernelSize.height, kernelSize.width, channelCount, filterCount)
