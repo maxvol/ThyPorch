@@ -1,5 +1,5 @@
 //
-//  MPSGPool2D.swift
+//  Pool2D+MPSG.swift
 //  
 //
 //  Created by Maxim Volgin on 02/10/2020.
