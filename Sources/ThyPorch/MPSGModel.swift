@@ -10,9 +10,10 @@ import Foundation
 import MetalPerformanceShaders
 import MetalPerformanceShadersGraph
 
-@available(macOS 11, iOS 14, *)
+@available(iOS 14, *)
 public protocol MPSGModel {
     typealias TensorBuilder = (MPSGraph, MPSGraphTensor) -> MPSGraphTensor
+    typealias Target = (tensors: [MPSGraphTensor], operations: [MPSGraphOperation])
     
     func debug(_ graph: MPSGraph, _ inputTensor: MPSGraphTensor) -> MPSGraphTensor
     
@@ -22,7 +23,7 @@ public protocol MPSGModel {
     
 }
 
-@available(macOS 11, iOS 14, *)
+@available(iOS 14, *)
 public extension MPSGModel {
     
     func debug(_ graph: MPSGraph, _ inputTensor: MPSGraphTensor) -> MPSGraphTensor {
