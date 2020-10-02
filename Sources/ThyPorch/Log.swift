@@ -13,5 +13,7 @@ struct Log {
     fileprivate static let subsystem: String = "ThyPorch" // Bundle.main.bundleIdentifier ?? ""
     
     static let metalPerformanceShadersGraph = OSLog(subsystem: subsystem, category: "MetalPerformanceShadersGraph")
+    static let accelerateBNNS = OSLog(subsystem: subsystem, category: "Accelerate.BNNS")
+    static let mlCompute = OSLog(subsystem: subsystem, category: "MLCompute")
 }
 
