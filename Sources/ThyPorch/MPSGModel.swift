@@ -19,7 +19,7 @@ public protocol MPSGModel {
     
     func sequence(graph: MPSGraph, inputTensor: MPSGraphTensor, _ builders: TensorBuilder...) -> MPSGraphTensor
     
-    func build(graph: MPSGraph, inputTensor: MPSGraphTensor) -> MPSGraphTensor
+    func build(graph: MPSGraph, inputTensor: MPSGraphTensor, labelTensor: MPSGraphTensor) -> (Target, Target)
     
 }
 
