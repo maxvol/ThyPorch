@@ -8,7 +8,7 @@
 import Foundation
 
 public enum MPSGShape {
-    // weights
+    // parameters
     case IO(Int, Int)
     case HWIO(Int, Int, Int, Int) // TensorFlow
     case OIHW(Int, Int, Int, Int) // MetalPerformanceShadersGraph
@@ -23,20 +23,36 @@ public enum MPSGShape {
 
 public extension MPSGShape {
     
+    var shape: [Int] {
+        get {
+            switch self {
+            // parameters
+            case .HWIO(let H, let W, let I, let O):
+                return [H, W, I, O]
+            case .OIHW(let O, let I, let H, let W):
+                return [O, I, H, W]
+            case .IO(let I, let O):
+                return [I, O]
+            // data
+            case .NCHW(let N, let C, let H, let W):
+                return [N, C, H, W]
+            case .NHWC(let N, let H, let W, let C):
+                return [N, H, W, C]
+            }
+
+        }
+    }
+    
     var weightCount: Int {
         get {
             switch self {
-            // weights
-            case .HWIO(let H, let W, let I, let O):
+            // parameters
+            case .HWIO(_, _, _, _):
                 fallthrough
-            case .OIHW(let O, let I, let H, let W):
-                return H * W * I * O
-            case .IO(let I, let O):
-                return I * O
-//            case .NCHW(let N, let C, let H, let W):
-//                fallthrough
-//            case .NHWC(let N, let H, let W, let C):
-//                return N * H * W * C
+            case .OIHW(_, _, _, _):
+                fallthrough
+            case .IO(_, _):
+                return shape.reduce(1, *)
             // data
             default:
                 return 0
@@ -55,10 +71,6 @@ public extension MPSGShape {
             case .IO(_, let O):
                 return O
             // data
-//            case .NCHW(_, let C, _, _):
-//                fallthrough
-//            case .NHWC(_, _, _, let C):
-//                return C
             default:
                 return 0
             }
