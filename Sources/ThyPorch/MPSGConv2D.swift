@@ -23,4 +23,15 @@ public extension Conv2D {
                                           weightsLayout: weightsLayout)
     }
     
+    func toWeightsLayout(channelCount: Int, filterCount: Int, weightsLayout: MPSGraphTensorNamedDataLayout) -> MPSGShape {
+        switch weightsLayout {
+        case .HWIO:
+            return .HWIO(kernelSize.height, kernelSize.width, channelCount, filterCount)
+        case .OIHW:
+            return .OIHW(filterCount, channelCount, kernelSize.height, kernelSize.width)
+        default:
+            fatalError("Illegal weightsLayout: `\(weightsLayout)`.")
+        }
+    }
+    
 }
