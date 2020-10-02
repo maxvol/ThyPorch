@@ -10,7 +10,7 @@ import Accelerate
 
 @available(macOS 11, iOS 14, *)
 public protocol BNNSModel {
-    func forward(_ inputArray: BNNSNDArrayDescriptor)
+    func forward(_ inputArray: BNNSNDArrayDescriptor, _ outputArray: BNNSNDArrayDescriptor)
     func backwardPass()
     func computeLoss()
 }
