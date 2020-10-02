@@ -16,3 +16,23 @@ public enum MPSGShape {
     case OIHW(Int, Int, Int, Int) // MetalPerformanceShadersGraph
 }
 
+public extension MPSGShape {
+    var count: Int {
+        get {
+            switch self {
+            // data
+            case .NCHW(let N, let C, let H, let W):
+                fallthrough
+            case .NHWC(let N, let H, let W, let C):
+                return N * H * W * C
+            // weights
+            case .HWIO(let H, let W, let I, let O):
+                fallthrough
+            case .OIHW(let O, let I, let H, let W):
+                return H * W * I * O
+            }
+        }
+    }
+}
+
+
