@@ -9,6 +9,7 @@ import Foundation
 
 public enum MPSGShape {
     // parameters
+    case C(Int)
     case IO(Int, Int)
     case HWIO(Int, Int, Int, Int) // TensorFlow
     case OIHW(Int, Int, Int, Int) // MetalPerformanceShadersGraph
@@ -23,7 +24,13 @@ public enum MPSGShape {
 
 public extension MPSGShape {
     
-    var shape: [Int] {
+    var arrayNSNumber: [NSNumber] {
+        get {
+            arrayInt.map { $0 as NSNumber }
+        }
+    }
+    
+    var arrayInt: [Int] {
         get {
             switch self {
             // parameters
@@ -33,6 +40,8 @@ public extension MPSGShape {
                 return [O, I, H, W]
             case .IO(let I, let O):
                 return [I, O]
+            case .C(let C):
+                return [C]
             // data
             case .NCHW(let N, let C, let H, let W):
                 return [N, C, H, W]
@@ -52,7 +61,9 @@ public extension MPSGShape {
             case .OIHW(_, _, _, _):
                 fallthrough
             case .IO(_, _):
-                return shape.reduce(1, *)
+                fallthrough
+            case .C(_):
+                return arrayInt.reduce(1, *)
             // data
             default:
                 return 0
@@ -70,6 +81,8 @@ public extension MPSGShape {
                 return O
             case .IO(_, let O):
                 return O
+            case .C(let C):
+                return C
             // data
             default:
                 return 0
