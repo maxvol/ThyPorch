@@ -13,10 +13,12 @@ import MetalPerformanceShadersGraph
 public extension Conv2D {
     
     func toMPSGraphConvolution2DOpDescriptor(dataLayout: MPSGraphTensorNamedDataLayout, weightsLayout: MPSGraphTensorNamedDataLayout) -> MPSGraphConvolution2DOpDescriptor? {
-        MPSGraphConvolution2DOpDescriptor(strideInX: stride.x,
-                                          strideInY: stride.y,
-                                          dilationRateInX: dilation.x,
-                                          dilationRateInY: dilation.y,
+        let (strideX, strideY) = stride.toXY
+        let (dilationX, dilationY) = dilation.toXY
+        return MPSGraphConvolution2DOpDescriptor(strideInX: strideX,
+                                          strideInY: strideY,
+                                          dilationRateInX: dilationX,
+                                          dilationRateInY: dilationY,
                                           groups: groupCount,
                                           paddingStyle: padding.toMPSGraphPaddingStyle,
                                           dataLayout: dataLayout,
@@ -24,11 +26,12 @@ public extension Conv2D {
     }
     
     func toWeightsShape(channelCount: Int, filterCount: Int, weightsLayout: MPSGraphTensorNamedDataLayout) -> Shape {
+        let (height, width) = kernelSize.toHW
         switch weightsLayout {
         case .HWIO:
-            return .HWIO(kernelSize.height, kernelSize.width, channelCount, filterCount)
+            return .HWIO(height, width, channelCount, filterCount)
         case .OIHW:
-            return .OIHW(filterCount, channelCount, kernelSize.height, kernelSize.width)
+            return .OIHW(filterCount, channelCount, height, width)
         default:
             fatalError("Illegal weightsLayout: `\(weightsLayout)`.")
         }

@@ -14,10 +14,12 @@ import MetalPerformanceShadersGraph
 public extension Pool2D {
     
     func toMPSGraphPooling2DOpDescriptor(dataLayout: MPSGraphTensorNamedDataLayout) -> MPSGraphPooling2DOpDescriptor? {
-        MPSGraphPooling2DOpDescriptor(kernelWidth: kernelSize.width,
-                                      kernelHeight: kernelSize.height,
-                                      strideInX: stride.x,
-                                      strideInY: stride.y,
+        let (width, height) = kernelSize.toWH
+        let (x, y) = stride.toXY
+        return MPSGraphPooling2DOpDescriptor(kernelWidth: width,
+                                      kernelHeight: height,
+                                      strideInX: x,
+                                      strideInY: y,
                                       paddingStyle: padding.toMPSGraphPaddingStyle,
                                       dataLayout: dataLayout)
     }
