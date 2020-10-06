@@ -88,4 +88,16 @@ public extension Shape {
         }
     }
     
+    var weightShape: Shape {
+        get {
+            self
+        }
+    }
+    
+    var biasShape: Shape {
+        get {
+            Shape.C(self.biasCount)
+        }
+    }
+    
 }
