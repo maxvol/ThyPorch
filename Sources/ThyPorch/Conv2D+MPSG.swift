@@ -9,7 +9,7 @@ import Foundation
 import MetalPerformanceShaders
 import MetalPerformanceShadersGraph
 
-@available(iOS 14, *)
+@available(macOS 11, iOS 14, *)
 public extension Conv2D {
     
     func toMPSGraphConvolution2DOpDescriptor(dataLayout: MPSGraphTensorNamedDataLayout, weightsLayout: MPSGraphTensorNamedDataLayout) -> MPSGraphConvolution2DOpDescriptor? {

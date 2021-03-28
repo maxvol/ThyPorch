@@ -9,7 +9,7 @@ import Foundation
 import MetalPerformanceShaders
 import MetalPerformanceShadersGraph
 
-@available(iOS 14, *)
+@available(macOS 11, iOS 14, *)
 public struct MPSGData {
     
     public static func data(for parameterArray: [Float32], dataType: MPSDataType = .float32) -> Data {

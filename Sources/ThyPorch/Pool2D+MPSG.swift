@@ -10,7 +10,7 @@ import Foundation
 import MetalPerformanceShaders
 import MetalPerformanceShadersGraph
 
-@available(iOS 14, *)
+@available(macOS 11, iOS 14, *)
 public extension Pool2D {
     
     func toMPSGraphPooling2DOpDescriptor(dataLayout: MPSGraphTensorNamedDataLayout) -> MPSGraphPooling2DOpDescriptor? {
