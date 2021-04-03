@@ -13,6 +13,7 @@ import MetalPerformanceShadersGraph
 @available(macOS 11, iOS 14, *)
 public protocol MPSGModel {
     
+    typealias VariableData = (tensor: MPSGraphTensor, data: [Float32], name: String?)
     typealias TensorBuilder = (MPSGraph, MPSGraphTensor) -> MPSGraphTensor
     typealias Target = (tensors: [MPSGraphTensor], operations: [MPSGraphOperation])
     typealias TargetTuple = (inference: Target, training: Target)
