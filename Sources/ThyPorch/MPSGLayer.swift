@@ -15,6 +15,7 @@ public protocol MPSGLayer {
     var graph: MPSGraph { get }
     var variableData: [MPSGModel.VariableData] { get }
     func callAsFunction(_ inputTensor: MPSGraphTensor) -> MPSGraphTensor
+//    @available(*, deprecated, renamed: "callAsFunction(MPSGraphTensor)")
     func callAsFunction(_ graph: MPSGraph, _ inputTensor: MPSGraphTensor) -> MPSGraphTensor
 //    static func data(layerVariable: LayerVariable) -> [Float32]
 //    static func add(layerVariable: LayerVariable, to graph: MPSGraph) -> MPSGModel.VariableData
