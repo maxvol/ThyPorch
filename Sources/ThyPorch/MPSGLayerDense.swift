@@ -11,9 +11,8 @@ import MetalPerformanceShaders
 import MetalPerformanceShadersGraph
 
 @available(macOS 11, iOS 14, *)
-public struct MPSGLayerDense: MPSGLayer {
-    
-    let graph: MPSGraph
+public struct MPSGLayerDense: MPSGLayer {    
+    public let graph: MPSGraph
     let weightVariableData: MPSGModel.VariableData
     let biasVariableData: MPSGModel.VariableData
     let hasActivation: Bool
