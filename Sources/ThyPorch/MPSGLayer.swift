@@ -13,7 +13,9 @@ import MetalPerformanceShadersGraph
 @available(macOS 11, iOS 14, *)
 public protocol MPSGLayer {
     var graph: MPSGraph { get }
+    var variableData: [MPSGModel.VariableData] { get }
     func callAsFunction(_ inputTensor: MPSGraphTensor) -> MPSGraphTensor
+    func callAsFunction(_ graph: MPSGraph, _ inputTensor: MPSGraphTensor) -> MPSGraphTensor
 //    static func data(layerVariable: LayerVariable) -> [Float32]
 //    static func add(layerVariable: LayerVariable, to graph: MPSGraph) -> MPSGModel.VariableData
 }
@@ -40,5 +42,11 @@ public extension MPSGLayer {
                                     name: name)
         return (tensor: tensor, data: data, name: name)
     }
+    
+    func callAsFunction(_ graph: MPSGraph, _ inputTensor: MPSGraphTensor) -> MPSGraphTensor {
+        assert(graph === self.graph)
+        return self.callAsFunction(inputTensor)
+    }
+
 }
 

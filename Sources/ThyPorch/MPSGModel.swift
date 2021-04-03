@@ -18,12 +18,16 @@ public protocol MPSGModel {
     typealias Target = (tensors: [MPSGraphTensor], operations: [MPSGraphOperation])
     typealias TargetTuple = (inference: Target, training: Target)
     
+    var variableData: [VariableData] { get }
+    
     func debug(_ graph: MPSGraph, _ inputTensor: MPSGraphTensor) -> MPSGraphTensor
     
-    func sequence(graph: MPSGraph, inputTensor: MPSGraphTensor, _ builders: TensorBuilder...) -> MPSGraphTensor
+    func sequence(graph: MPSGraph, inputTensor: MPSGraphTensor, variableTensors: inout [VariableData], _ layers: MPSGLayer...) -> MPSGraphTensor
+    
+    func sequence(graph: MPSGraph, inputTensor: MPSGraphTensor, variableTensors: inout [VariableData], _ builders: TensorBuilder...) -> MPSGraphTensor
     
     func build(graph: MPSGraph, inputTensor: MPSGraphTensor, labelTensor: MPSGraphTensor) -> TargetTuple
-    
+
 }
 
 @available(macOS 11, iOS 14, *)
@@ -34,7 +38,15 @@ public extension MPSGModel {
         return inputTensor
     }
     
-    func sequence(graph: MPSGraph, inputTensor: MPSGraphTensor, _ builders: TensorBuilder...) -> MPSGraphTensor {
+    func sequence(graph: MPSGraph, inputTensor: MPSGraphTensor, variableData: inout [VariableData], _ layers: MPSGLayer...) -> MPSGraphTensor {
+        layers.reduce(inputTensor) { tensor, layer in
+            let tensor = layer(tensor)
+            variableData += layer.variableData
+            return tensor
+        }
+    }
+    
+    func sequence(graph: MPSGraph, inputTensor: MPSGraphTensor, variableData: inout [VariableData], _ builders: TensorBuilder...) -> MPSGraphTensor {
         builders.reduce(inputTensor) { tensor, builder in
             builder(graph, tensor)
         }

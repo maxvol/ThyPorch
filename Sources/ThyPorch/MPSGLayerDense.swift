@@ -11,8 +11,9 @@ import MetalPerformanceShaders
 import MetalPerformanceShadersGraph
 
 @available(macOS 11, iOS 14, *)
-public struct MPSGLayerDense: MPSGLayer {    
+public struct MPSGLayerDense: MPSGLayer {
     public let graph: MPSGraph
+    public private(set) var variableData: [MPSGModel.VariableData]
     let weightVariableData: MPSGModel.VariableData
     let biasVariableData: MPSGModel.VariableData
     let hasActivation: Bool
@@ -21,17 +22,16 @@ public struct MPSGLayerDense: MPSGLayer {
     public init(graph: MPSGraph,
                 weightsShape: Shape,
                 hasActivation: Bool,
-                variableTensors: inout [MPSGModel.VariableData],
                 name: String? = nil
     ) {
         self.graph = graph
         self.weightVariableData = Self.add(layerVariable: .weight(layerShape: weightsShape, layerName: name), to: graph)
         self.biasVariableData = Self.add(layerVariable: .bias(layerShape: weightsShape, layerName: name), to: graph)
-        variableTensors += [weightVariableData, biasVariableData]
+        self.variableData = [weightVariableData, biasVariableData]
         self.hasActivation = hasActivation
         self.name = name
     }
-    
+        
     public func callAsFunction(_ inputTensor: MPSGraphTensor) -> MPSGraphTensor {
         let fcTensor = graph.matrixMultiplication(primary: inputTensor,
                                                   secondary: weightVariableData.tensor,
