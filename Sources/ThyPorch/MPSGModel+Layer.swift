@@ -19,7 +19,7 @@ public extension MPSGModel {
 //        // [16, 14, 14, 32]
 //    }
     
-    func data(layerVariable: LayerVariable) -> [Float32] {
+    static func data(layerVariable: LayerVariable) -> [Float32] {
         let (count, _, _) = layerVariable.countShapeName
         switch layerVariable {
         case .weight(_, _):
@@ -29,7 +29,7 @@ public extension MPSGModel {
         }
     }
     
-    func add(layerVariable: LayerVariable, to graph: MPSGraph) -> VariableData {
+    static func add(layerVariable: LayerVariable, to graph: MPSGraph) -> VariableData {
         let (_, shape, name) = layerVariable.countShapeName
         let data = self.data(layerVariable: layerVariable)
         let tensor = graph.variable(with: MPSGData.data(for: data),
@@ -46,8 +46,8 @@ public extension MPSGModel {
                              variableTensors: inout [VariableData],
                              name: String? = nil) -> MPSGraphTensor {
         
-        let weightVariableData = add(layerVariable: .weight(layerShape: weightsShape, layerName: name), to: graph)
-        let biasVariableData = add(layerVariable: .bias(layerShape: weightsShape, layerName: name), to: graph)
+        let weightVariableData = Self.add(layerVariable: .weight(layerShape: weightsShape, layerName: name), to: graph)
+        let biasVariableData = Self.add(layerVariable: .bias(layerShape: weightsShape, layerName: name), to: graph)
                 
         let convTensor = graph.convolution2D(sourceTensor,
                                              weights: weightVariableData.tensor,
@@ -74,8 +74,8 @@ public extension MPSGModel {
                                        variableTensors: inout [VariableData],
                                        name: String? = nil) -> MPSGraphTensor {
         
-        let weightVariableData = add(layerVariable: .weight(layerShape: weightsShape, layerName: name), to: graph)
-        let biasVariableData = add(layerVariable: .bias(layerShape: weightsShape, layerName: name), to: graph)
+        let weightVariableData = Self.add(layerVariable: .weight(layerShape: weightsShape, layerName: name), to: graph)
+        let biasVariableData = Self.add(layerVariable: .bias(layerShape: weightsShape, layerName: name), to: graph)
                 
         let fcTensor = graph.matrixMultiplication(primary: sourceTensor,
                                                   secondary: weightVariableData.tensor,
