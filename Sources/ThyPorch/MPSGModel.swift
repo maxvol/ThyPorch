@@ -22,9 +22,9 @@ public protocol MPSGModel {
     
     func debug(_ graph: MPSGraph, _ inputTensor: MPSGraphTensor) -> MPSGraphTensor
     
-    func sequence(graph: MPSGraph, inputTensor: MPSGraphTensor, variableTensors: inout [VariableData], _ layers: MPSGLayer...) -> MPSGraphTensor
+    func sequence(graph: MPSGraph, inputTensor: MPSGraphTensor, variableData: inout [VariableData], _ layers: MPSGLayer...) -> MPSGraphTensor
     
-    func sequence(graph: MPSGraph, inputTensor: MPSGraphTensor, variableTensors: inout [VariableData], _ builders: TensorBuilder...) -> MPSGraphTensor
+    func sequence(graph: MPSGraph, inputTensor: MPSGraphTensor, variableData: inout [VariableData], _ builders: TensorBuilder...) -> MPSGraphTensor
     
     func build(graph: MPSGraph, inputTensor: MPSGraphTensor, labelTensor: MPSGraphTensor) -> TargetTuple
 
@@ -39,11 +39,13 @@ public extension MPSGModel {
     }
     
     func sequence(graph: MPSGraph, inputTensor: MPSGraphTensor, variableData: inout [VariableData], _ layers: MPSGLayer...) -> MPSGraphTensor {
-        layers.reduce(inputTensor) { tensor, layer in
-            let tensor = layer(tensor)
-            variableData += layer.variableData
-            return tensor
+        let result = layers.reduce(inputTensor) { tensor, layer in
+            layer(tensor)
         }
+        for layer in layers {
+            variableData += layer.variableData
+        }
+        return result
     }
     
     func sequence(graph: MPSGraph, inputTensor: MPSGraphTensor, variableData: inout [VariableData], _ builders: TensorBuilder...) -> MPSGraphTensor {
