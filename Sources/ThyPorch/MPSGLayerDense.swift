@@ -33,7 +33,7 @@ public struct MPSGLayerDense: MPSGLayer {
         self.name = name
     }
     
-    func callAsFunction(_ inputTensor: MPSGraphTensor) -> MPSGraphTensor {
+    public func callAsFunction(_ inputTensor: MPSGraphTensor) -> MPSGraphTensor {
         let fcTensor = graph.matrixMultiplication(primary: inputTensor,
                                                   secondary: weightVariableData.tensor,
                                                   name: name)
