@@ -8,7 +8,7 @@
 import Foundation
 
 public struct Hyper {
-    static let numTrainingIterations = 300
-    static let lambda = 0.01
-    static let batchSize = 16
+    public static let numTrainingIterations = 300
+    public static let lambda = 0.01
+    public static let batchSize = 16
 }
