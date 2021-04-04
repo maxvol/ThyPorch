@@ -52,11 +52,11 @@ public extension MPSGModel {
 //                   )
             variableData += layer.variableData
         }
-        os_log("total params: %@",
-               log: Log.metalPerformanceShadersGraph,
-               type: .debug,
-               self.variableData.reduce(0) { count, variableData in count + variableData.data.count }
-               )
+//        os_log("total params: %@",
+//               log: Log.metalPerformanceShadersGraph,
+//               type: .debug,
+//               self.variableData.reduce(0) { count, variableData in count + variableData.data.count }
+//               )
         return result
     }
     
