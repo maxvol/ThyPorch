@@ -43,8 +43,20 @@ public extension MPSGModel {
             try! layer(tensor)
         }
         for layer in layers {
+            os_log("layer: %@\tshape: %@\tparams: %@",
+                   log: Log.metalPerformanceShadersGraph,
+                   type: .debug,
+                   "", // layer.name,
+                   "", // String(describing: layer.shape),
+                   layer.variableData.reduce(0) { count, variableData in count + variableData.data.count }
+                   )
             variableData += layer.variableData
         }
+        os_log("total params: %@",
+               log: Log.metalPerformanceShadersGraph,
+               type: .debug,
+               self.variableData.reduce(0) { count, variableData in count + variableData.data.count }
+               )
         return result
     }
     
