@@ -40,7 +40,7 @@ public extension MPSGModel {
     
     func sequence(graph: MPSGraph, inputTensor: MPSGraphTensor, variableData: inout [VariableData], _ layers: MPSGLayer...) -> MPSGraphTensor {
         let result = layers.reduce(inputTensor) { tensor, layer in
-            layer(tensor)
+            try! layer(tensor)
         }
         for layer in layers {
             variableData += layer.variableData
