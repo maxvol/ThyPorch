@@ -28,6 +28,8 @@ public protocol MPSGModel {
     
     func save(variableData: [VariableData])
 
+    func summary()
+    
 }
 
 @available(macOS 11, iOS 14, *)
@@ -36,6 +38,14 @@ public extension MPSGModel {
     func debug(_ graph: MPSGraph, _ inputTensor: MPSGraphTensor) -> MPSGraphTensor {
         os_log("shape: %@", log: Log.metalPerformanceShadersGraph, type: .debug, String(describing: inputTensor.shape))
         return inputTensor
+    }
+    
+    func summary() {
+        os_log("total params: %d",
+               log: Log.metalPerformanceShadersGraph,
+               type: .debug,
+               self.variableData.reduce(0) { count, variableData in count + variableData.data.count }
+               )
     }
     
     func sequence(graph: MPSGraph, inputTensor: MPSGraphTensor, variableData: inout [VariableData], _ layers: MPSGLayer...) -> MPSGraphTensor {
@@ -52,11 +62,6 @@ public extension MPSGModel {
                    )
             variableData += layer.variableData
         }
-        os_log("total params: %d",
-               log: Log.metalPerformanceShadersGraph,
-               type: .debug,
-               self.variableData.reduce(0) { count, variableData in count + variableData.data.count }
-               )
         return result
     }
     
