@@ -12,6 +12,7 @@ import MetalPerformanceShadersGraph
 
 @available(macOS 11, iOS 14, *)
 public class MPSGSequential { // : MPSGModel {
+    public let graph: MPSGraph
     public private(set) var layers: [MPSGLayer] = []
     
     public var variableData: [MPSGModel.VariableData] {

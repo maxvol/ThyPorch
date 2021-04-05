@@ -15,6 +15,10 @@ import MetalPerformanceShadersGraph
 @available(macOS 11, iOS 14, *)
 public extension MPSGSequential {
     
+//    var gDevice: MTLDevice = MTLCreateSystemDefaultDevice()!
+//    var gCommandQueue: MTLCommandQueue = gDevice.makeCommandQueue()!
+
+    
     public func fit() {}
 
     public func predict() {}
@@ -111,14 +115,16 @@ public extension MPSGSequential {
         return fetch[inferenceTarget.tensors[0]]!
     }
     
-    // Run single inference case, call is blocking
-    func encodeInferenceCase(sourceTensorData: MPSGraphTensorData) -> MPSGraphTensorData {
-        let fetch = graph.run(with: gCommandQueue,
-                              feeds: [sourcePlaceholderTensor: sourceTensorData],
-                              targetTensors: inferenceTarget.tensors,
-                              targetOperations: inferenceTarget.operations)
 
+   */
+   
+    // Run single inference case, call is blocking
+    func predictEncode(_ commandQueue: MTLCommandQueue, _ sourceData: MPSGraphTensorData) -> MPSGraphTensorData {
+        let fetch = self.graph.run(with: commandQueue,
+                              feeds: [sourcePlaceholder: sourceData],
+                              targetTensors: self.inferenceTarget.tensors,
+                              targetOperations: self.inferenceTarget.operations)
         return fetch[inferenceTarget.tensors[0]]!
     }
-   */
+    
 }
