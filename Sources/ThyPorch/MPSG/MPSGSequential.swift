@@ -40,12 +40,9 @@ public class MPSGSequential { // : MPSGModel {
         self.graph = graph
         self.layers = layers
         
-        //        sourcePlaceholderTensor = graph.placeholder(shape: [Hyper.batchSize as NSNumber, MNISTSize * MNISTSize as NSNumber], name: nil) // 16, 28*28
-        //        labelsPlaceholderTensor = graph.placeholder(shape: [Hyper.batchSize as NSNumber, MNISTNumClasses as NSNumber], name: nil)       // 16, 10
-        //
-        //        (inferenceTarget, trainingTarget) = model.build(graph: graph, inputTensor: sourcePlaceholderTensor, labelTensor: labelsPlaceholderTensor)
-        //        print(graph.debugDescription)
-
+        self.sourcePlaceholder = graph.placeholder(shape: [Hyper.batchSize as NSNumber, MNISTSize * MNISTSize as NSNumber], name: nil) // 16, 28*28
+        self.labelsPlaceholder = graph.placeholder(shape: [Hyper.batchSize as NSNumber, MNISTNumClasses as NSNumber], name: nil)       // 16, 10
+        print(graph.debugDescription)
     }
     
     public func add(_ layer: MPSGLayer) {
