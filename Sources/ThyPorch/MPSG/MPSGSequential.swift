@@ -36,7 +36,8 @@ public class MPSGSequential { // : MPSGModel {
         ""
     }
 
-    init(_ layers: MPSGLayer...) {
+    init(graph: MPSGraph, _ layers: MPSGLayer...) {
+        self.graph = graph
         self.layers = layers
         
         //        sourcePlaceholderTensor = graph.placeholder(shape: [Hyper.batchSize as NSNumber, MNISTSize * MNISTSize as NSNumber], name: nil) // 16, 28*28
@@ -73,7 +74,7 @@ public class MPSGSequential { // : MPSGModel {
     
     static func test() {
         let graph = MPSGraph()
-        let model = MPSGSequential(
+        let model = MPSGSequential(graph: graph,
             MPSGLayerLinear(graph: graph, units: 8, name: "lin0")
         )
         let lossObject = MPSGLossCCE(graph: graph)
