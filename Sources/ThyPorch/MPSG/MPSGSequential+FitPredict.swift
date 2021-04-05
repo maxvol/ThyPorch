@@ -104,6 +104,9 @@ public extension MPSGSequential {
     
     // Encode inference batch to command buffer using double buffering
     func batchPredict(_ sourceTensorData: MPSGraphTensorData, _ labelsTensorData: MPSGraphTensorData) -> MPSGraphTensorData {
+        let batchSize = labelsTensorData.shape.first!.intValue
+        let labelSize = labelsTensorData.shape.last!.intValue
+        
         doubleBufferingSemaphore.wait()
 
         let executionDesc = MPSGraphExecutionDescriptor()
@@ -112,8 +115,8 @@ public extension MPSGSequential {
         executionDesc.completionHandler = { (resultsDictionary, nil) in
             let outputTensorData: MPSGraphTensorData = resultsDictionary[self.inferenceTarget.tensors[0]]!
 
-            var values = [Float](repeating: 0, count: Int(Hyper.batchSize) * MNISTNumClasses)
-            var labels = [Float](repeating: 0, count: Int(Hyper.batchSize) * MNISTNumClasses)
+            var values = [Float](repeating: 0, count: batchSize * labelSize)
+            var labels = [Float](repeating: 0, count: batchSize * labelSize)
 
             outputTensorData.mpsndarray().readBytes(&values, strideBytes: nil)
             yLabels.readBytes(&labels, strideBytes: nil)
@@ -123,7 +126,7 @@ public extension MPSGSequential {
                 var maxIndex = 0
                 var maxValue: Float = 0
                 var correctIndex = 0
-                for classIdx in 0..<MNISTNumClasses {
+                for classIdx in 0..<labelSize {
                     if labels[ind] == 1.0 {
                         correctIndex = classIdx
                     }
@@ -152,6 +155,9 @@ public extension MPSGSequential {
     
     // Encode inference batch to command buffer using double buffering
     func batchPredictEncode(commandBuffer: MTLCommandBuffer, _ sourceTensorData: MPSGraphTensorData, _ labelsTensorData: MPSGraphTensorData) -> MPSGraphTensorData {
+        let batchSize = labelsTensorData.shape.first!.intValue
+        let labelSize = labelsTensorData.shape.last!.intValue
+
         doubleBufferingSemaphore.wait()
 
         let executionDesc = MPSGraphExecutionDescriptor()
@@ -160,8 +166,8 @@ public extension MPSGSequential {
         executionDesc.completionHandler = { (resultsDictionary, nil) in
             let outputTensorData: MPSGraphTensorData = resultsDictionary[self.inferenceTarget.tensors[0]]!
 
-            var values = [Float](repeating: 0, count: Int(Hyper.batchSize) * MNISTNumClasses)
-            var labels = [Float](repeating: 0, count: Int(Hyper.batchSize) * MNISTNumClasses)
+            var values = [Float](repeating: 0, count: batchSize * labelSize)
+            var labels = [Float](repeating: 0, count: batchSize * labelSize)
 
             outputTensorData.mpsndarray().readBytes(&values, strideBytes: nil)
             yLabels.readBytes(&labels, strideBytes: nil)
@@ -171,7 +177,7 @@ public extension MPSGSequential {
                 var maxIndex = 0
                 var maxValue: Float = 0
                 var correctIndex = 0
-                for classIdx in 0..<MNISTNumClasses {
+                for classIdx in 0..<labelSize {
                     if labels[ind] == 1.0 {
                         correctIndex = classIdx
                     }
