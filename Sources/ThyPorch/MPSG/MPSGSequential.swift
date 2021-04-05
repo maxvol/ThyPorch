@@ -76,6 +76,22 @@ public class MPSGSequential { // : MPSGModel {
                self.variableData.reduce(0) { count, variableData in count + variableData.data.count }
                )
     }
+    
+    func save(variableData: [VariableData]) {
+        let url = getDocumentsDirectory()
+        for variable in variableData {
+            guard let name = variable.name else {
+                continue
+            }
+            try? MPSGData.data(for: variable.data).write(to: url.appendingPathComponent(name), options: .atomicWrite)
+        }
+    }
+    
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let documentsDirectory = paths[0]
+        return documentsDirectory
+    }
         
     static func test() {
         let graph = MPSGraph()
