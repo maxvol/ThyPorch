@@ -77,7 +77,7 @@ public class MPSGSequential { // : MPSGModel {
                )
     }
     
-    public func save(variableData: [VariableData]) {
+    public func save(variableData: [MPSGModel.VariableData]) {
         let url = getDocumentsDirectory()
         for variable in variableData {
             guard let name = variable.name else {
