@@ -36,12 +36,13 @@ public class MPSGSequential { // : MPSGModel {
         ""
     }
 
-    init(graph: MPSGraph, _ layers: MPSGLayer...) {
+    init(graph: MPSGraph, inShape: Shape, outShape: Shape, _ layers: MPSGLayer...) {
         self.graph = graph
         self.layers = layers
-        
-        self.sourcePlaceholder = graph.placeholder(shape: [Hyper.batchSize as NSNumber, MNISTSize * MNISTSize as NSNumber], name: nil) // 16, 28*28
-        self.labelsPlaceholder = graph.placeholder(shape: [Hyper.batchSize as NSNumber, MNISTNumClasses as NSNumber], name: nil)       // 16, 10
+        self.sourcePlaceholder = graph.placeholder(shape: inShape.toArrayNSNumber, name: nil)
+        self.labelsPlaceholder = graph.placeholder(shape: outShape.toArrayNSNumber, name: nil)
+//        self.sourcePlaceholder = graph.placeholder(shape: [Hyper.batchSize as NSNumber, MNISTSize * MNISTSize as NSNumber], name: nil)
+//        self.labelsPlaceholder = graph.placeholder(shape: [Hyper.batchSize as NSNumber, MNISTNumClasses as NSNumber], name: nil)
         print(graph.debugDescription)
     }
     
@@ -72,6 +73,8 @@ public class MPSGSequential { // : MPSGModel {
     static func test() {
         let graph = MPSGraph()
         let model = MPSGSequential(graph: graph,
+                                   inShape: .IO(16, 28*28),
+                                   outShape: .IO(16, 10),
             MPSGLayerLinear(graph: graph, units: 8, name: "lin0")
         )
         let lossObject = MPSGLossCCE(graph: graph)
