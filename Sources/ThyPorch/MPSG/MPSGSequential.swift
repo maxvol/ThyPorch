@@ -36,11 +36,12 @@ public class MPSGSequential { // : MPSGModel {
     init(graph: MPSGraph, inShape: Shape, outShape: Shape, _ layers: MPSGLayer...) {
         self.graph = graph
         self.layers = layers
-        self.sourcePlaceholder = graph.placeholder(shape: inShape.toArrayNSNumber, name: nil)
+        let inputTensor =  graph.placeholder(shape: inShape.toArrayNSNumber, name: nil)
+        self.sourcePlaceholder = inputTensor
         self.labelsPlaceholder = graph.placeholder(shape: outShape.toArrayNSNumber, name: nil)
 //        self.sourcePlaceholder = graph.placeholder(shape: [Hyper.batchSize as NSNumber, MNISTSize * MNISTSize as NSNumber], name: nil)
 //        self.labelsPlaceholder = graph.placeholder(shape: [Hyper.batchSize as NSNumber, MNISTNumClasses as NSNumber], name: nil)
-        self.output = layers.reduce(self.sourcePlaceholder) { tensor, layer in
+        self.output = layers.reduce(inputTensor) { tensor, layer in
             try! layer(tensor)
         }
         let totalParameterCount = variableData.reduce(0) { r, e in r + e.data.count }
