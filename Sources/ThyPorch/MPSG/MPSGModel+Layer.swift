@@ -27,6 +27,18 @@ public extension MPSGModel {
 
         var updateOps: [MPSGraphOperation] = []
         for (key, value) in gradTensors {
+            
+            /**
+             *              variable = variable - (learningRate * g)
+             *
+             *              where,
+             *                g    is gradient of error wrt variable
+             */
+//            let updateOperation = graph.applyStochasticGradientDescent(learningRate: lambdaTensor,
+//                                       variable: variableOperation,
+//                                       gradient: value,
+//                                           name: nil)
+            
             let updateTensor = graph.stochasticGradientDescent(learningRate: lambdaTensor,
                                                                values: key,
                                                                gradient: value,

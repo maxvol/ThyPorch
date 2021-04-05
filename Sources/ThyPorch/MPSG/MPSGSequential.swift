@@ -11,7 +11,7 @@ import MetalPerformanceShaders
 import MetalPerformanceShadersGraph
 
 @available(macOS 11, iOS 14, *)
-class MPSGSequential { // : MPSGModel {
+public class MPSGSequential { // : MPSGModel {
     public private(set) var layers: [MPSGLayer] = []
     public var variableData: [MPSGModel.VariableData] {
         get {
@@ -28,7 +28,9 @@ class MPSGSequential { // : MPSGModel {
     public func compile() {}
     
     public func fit() {}
-    
+
+    public func predict() {}
+
     init(_ layers: MPSGLayer...) {
         self.layers = layers
     }
