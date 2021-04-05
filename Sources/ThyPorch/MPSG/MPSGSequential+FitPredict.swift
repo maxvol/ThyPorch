@@ -15,13 +15,10 @@ import MetalPerformanceShadersGraph
 @available(macOS 11, iOS 14, *)
 public extension MPSGSequential {
     
-    var sourcePlaceholderTensor: MPSGraphTensor
-    var labelsPlaceholderTensor: MPSGraphTensor
-    
-    var trainingTarget: MPSGModel.Target = (tensors: [], operations: [])
-    var inferenceTarget: MPSGModel.Target = (tensors: [], operations: [])
-    
-    let doubleBufferingSemaphore = DispatchSemaphore(value: 2)
+    public func fit() {}
+
+    public func predict() {}
+/*
     
 //    override init () {
 //
@@ -133,5 +130,5 @@ public extension MPSGSequential {
 
         return fetch[inferenceTarget.tensors[0]]!
     }
-    
+   */
 }
