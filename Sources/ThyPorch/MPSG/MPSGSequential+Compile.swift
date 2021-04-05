@@ -18,8 +18,6 @@ public extension MPSGSequential {
      Compile defines the loss function, the optimizer and the metrics.
      */
     func compile(lossObject: MPSGLoss, optimizer: MPSGOptimizer) {
-        let graph: MPSGraph! = nil
-        let output: MPSGraphTensor! = nil
         // inference
         let softMax = graph.softMax(with: output, axis: -1, name: nil)
         self.inferenceTarget = (tensors: [softMax], operations: [])
