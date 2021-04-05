@@ -22,8 +22,8 @@ public class MPSGOptimizerSGD: MPSGOptimizer {
         self.name = name
     }
     
-    public func callAsFunction(loss: MPSGraphTensor, variable: MPSGraphTensor...) -> [MPSGraphOperation] {
-        let gradients = graph.gradients(of: loss, with: variable, name: name("_gradients"))
+    public func callAsFunction(_ loss: MPSGraphTensor, _ variables: [MPSGraphTensor]) -> [MPSGraphOperation] {
+        let gradients = graph.gradients(of: loss, with: variables, name: name("_gradients"))
         var updateOps: [MPSGraphOperation] = []
         for (value, gradient) in gradients {
             let newValue = graph.stochasticGradientDescent(learningRate: learningRate,

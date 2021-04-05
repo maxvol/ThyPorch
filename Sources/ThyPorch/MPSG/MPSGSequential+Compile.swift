@@ -24,7 +24,7 @@ public extension MPSGSequential {
         let softMax = graph.softMax(with: output, axis: -1, name: nil)
         self.inferenceTarget = (tensors: [softMax], operations: [])
         // training
-        let loss = lossObject(output, labels)
+        let loss = lossObject(output, labelsPlaceholder)
         let variables = variableData.map { $0.0 }
         let operations = optimizer(loss, variables)
         self.trainingTarget = (tensors: variables, operations: operations)

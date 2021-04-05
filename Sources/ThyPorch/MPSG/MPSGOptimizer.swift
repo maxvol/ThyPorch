@@ -12,5 +12,5 @@ import MetalPerformanceShadersGraph
 
 @available(macOS 11, iOS 14, *)
 public protocol MPSGOptimizer {
-    func callAsFunction(loss: MPSGraphTensor, variable: MPSGraphTensor...) -> [MPSGraphOperation] 
+    func callAsFunction(_ loss: MPSGraphTensor, _ variables: [MPSGraphTensor]) -> [MPSGraphOperation] 
 }

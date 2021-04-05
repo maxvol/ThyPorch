@@ -22,8 +22,8 @@ public class MPSGSequential { // : MPSGModel {
         }
     }
     
-    var sourcePlaceholderTensor: MPSGraphTensor
-    var labelsPlaceholderTensor: MPSGraphTensor
+    var sourcePlaceholder: MPSGraphTensor
+    var labelsPlaceholder: MPSGraphTensor
     
     var trainingTarget: MPSGModel.Target = (tensors: [], operations: [])
     var inferenceTarget: MPSGModel.Target = (tensors: [], operations: [])
@@ -70,7 +70,7 @@ public class MPSGSequential { // : MPSGModel {
         )
         let lossObject = MPSGLossCCE(graph: graph)
         let sgd = MPSGOptimizerSGD(graph: graph)
-        model.compile(lossObject: lossObject, optimizer: sgd)        
+        model.compile(lossObject: lossObject, optimizer: sgd)
     }
     
 }
