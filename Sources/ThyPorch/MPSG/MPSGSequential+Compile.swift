@@ -25,7 +25,7 @@ public extension MPSGSequential {
         let loss = lossObject(output, labelsPlaceholder)
         let variables = variableData.map { $0.0 }
         let operations = optimizer(loss, variables)
-        self.trainingTarget = (tensors: variables, operations: operations)
+        self.trainingTarget = (tensors: [loss] + variables, operations: operations)
     }
     
 }
