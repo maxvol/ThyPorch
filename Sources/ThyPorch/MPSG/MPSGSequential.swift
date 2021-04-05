@@ -33,7 +33,7 @@ public class MPSGSequential { // : MPSGModel {
     
     let doubleBufferingSemaphore = DispatchSemaphore(value: 2)
     
-    init(graph: MPSGraph, inShape: Shape, outShape: Shape, _ layers: MPSGLayer...) {
+    public init(graph: MPSGraph, inShape: Shape, outShape: Shape, _ layers: MPSGLayer...) {
         self.graph = graph
         self.layers = layers
         let inputTensor =  graph.placeholder(shape: inShape.toArrayNSNumber, name: nil)
@@ -77,7 +77,7 @@ public class MPSGSequential { // : MPSGModel {
                )
     }
     
-    func save(variableData: [VariableData]) {
+    public func save(variableData: [VariableData]) {
         let url = getDocumentsDirectory()
         for variable in variableData {
             guard let name = variable.name else {
