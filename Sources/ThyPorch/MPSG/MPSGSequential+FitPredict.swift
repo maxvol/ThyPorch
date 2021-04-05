@@ -20,16 +20,6 @@ public extension MPSGSequential {
     public func predict() {}
 /*
     
-//    override init () {
-//
-//        sourcePlaceholderTensor = graph.placeholder(shape: [Hyper.batchSize as NSNumber, MNISTSize * MNISTSize as NSNumber], name: nil) // 16, 28*28
-//        labelsPlaceholderTensor = graph.placeholder(shape: [Hyper.batchSize as NSNumber, MNISTNumClasses as NSNumber], name: nil)       // 16, 10
-//
-//        (inferenceTarget, trainingTarget) = model.build(graph: graph, inputTensor: sourcePlaceholderTensor, labelTensor: labelsPlaceholderTensor)
-//        print(graph.debugDescription)
-//
-//        super.init()
-//    }
 
     // Encode training batch to command buffer using double buffering
     func encodeTrainingBatch(commandBuffer: MTLCommandBuffer,
