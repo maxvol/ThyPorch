@@ -23,6 +23,8 @@ public class MPSGSequential { // : MPSGModel {
         }
     }
     
+    let output: MPSGraphTensor
+    
     var sourcePlaceholder: MPSGraphTensor
     var labelsPlaceholder: MPSGraphTensor
     
@@ -31,11 +33,6 @@ public class MPSGSequential { // : MPSGModel {
     
     let doubleBufferingSemaphore = DispatchSemaphore(value: 2)
     
-    // TODO
-    public func summary() -> String {
-        ""
-    }
-
     init(graph: MPSGraph, inShape: Shape, outShape: Shape, _ layers: MPSGLayer...) {
         self.graph = graph
         self.layers = layers
@@ -43,16 +40,17 @@ public class MPSGSequential { // : MPSGModel {
         self.labelsPlaceholder = graph.placeholder(shape: outShape.toArrayNSNumber, name: nil)
 //        self.sourcePlaceholder = graph.placeholder(shape: [Hyper.batchSize as NSNumber, MNISTSize * MNISTSize as NSNumber], name: nil)
 //        self.labelsPlaceholder = graph.placeholder(shape: [Hyper.batchSize as NSNumber, MNISTNumClasses as NSNumber], name: nil)
+        self.output = layers.reduce(self.sourcePlaceholder) { tensor, layer in
+            try! layer(tensor)
+        }
+        let totalParameterCount = variableData.reduce(0) { r, e in r + e.data.count }
+        print("totalParameterCount: \(totalParameterCount)")
         print(graph.debugDescription)
     }
     
     public func add(_ layer: MPSGLayer) {
         self.layers.append(layer)
     }
-    
-//    func build(graph: MPSGraph, inputTensor: MPSGraphTensor, labelTensor: MPSGraphTensor) -> MPSGModel.TargetTuple {
-//
-//    }
     
     public func update(_ resultsDictionary: [MPSGraphTensor: MPSGraphTensorData]) {
         var totalParameterCount = 0
@@ -70,6 +68,14 @@ public class MPSGSequential { // : MPSGModel {
         }
     }
     
+    public func summary() {
+        os_log("total params: %d",
+               log: Log.metalPerformanceShadersGraph,
+               type: .debug,
+               self.variableData.reduce(0) { count, variableData in count + variableData.data.count }
+               )
+    }
+        
     static func test() {
         let graph = MPSGraph()
         let model = MPSGSequential(graph: graph,
