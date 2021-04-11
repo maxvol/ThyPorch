@@ -103,7 +103,9 @@ public extension MPSGSequential {
     // MARK: - inference
     
     // Encode inference batch to command buffer using double buffering
-    func batchPredict(_ sourceTensorData: MPSGraphTensorData, _ labelsTensorData: MPSGraphTensorData, gCorrect: inout Int, batchSize: Int = Hyper.batchSize) -> MPSGraphTensorData {
+    func batchPredict(_ sourceTensorData: MPSGraphTensorData, _ labelsTensorData: MPSGraphTensorData, batchSize: Int = Hyper.batchSize) -> (MPSGraphTensorData, Int) {
+        var gCorrect = 0
+        
         let batchSize = labelsTensorData.shape.first!.intValue
         let labelSize = labelsTensorData.shape.last!.intValue
         
@@ -150,11 +152,13 @@ public extension MPSGSequential {
                                   targetOperations: inferenceTarget.operations,
                                   executionDescriptor: executionDesc)
         
-        return fetch[inferenceTarget.tensors[0]]!
+        return (fetch[inferenceTarget.tensors[0]]!, gCorrect)
     }
     
     // Encode inference batch to command buffer using double buffering
-    func batchPredictEncode(commandBuffer: MTLCommandBuffer, _ sourceTensorData: MPSGraphTensorData, _ labelsTensorData: MPSGraphTensorData, gCorrect: inout Int, batchSize: Int = Hyper.batchSize) -> MPSGraphTensorData {
+    func batchPredictEncode(commandBuffer: MTLCommandBuffer, _ sourceTensorData: MPSGraphTensorData, _ labelsTensorData: MPSGraphTensorData, batchSize: Int = Hyper.batchSize) -> (MPSGraphTensorData, Int) {
+        var gCorrect = 0
+        
         let batchSize = labelsTensorData.shape.first!.intValue
         let labelSize = labelsTensorData.shape.last!.intValue
 
@@ -201,7 +205,7 @@ public extension MPSGSequential {
                                   targetOperations: inferenceTarget.operations,
                                   executionDescriptor: executionDesc)
         
-        return fetch[inferenceTarget.tensors[0]]!
+        return (fetch[inferenceTarget.tensors[0]]!, gCorrect)
     }
     
     // Run single inference case, call is blocking
