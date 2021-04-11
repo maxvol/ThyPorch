@@ -17,10 +17,14 @@ public extension MPSGSequential {
     /**
      Compile defines the loss function, the optimizer and the metrics.
      */
-    func compile(lossObject: MPSGLoss, optimizer: MPSGOptimizer) {
+    func compile(lossObject: MPSGLoss, optimizer: MPSGOptimizer, softmax: Bool = true) {
         // inference
-        let softMax = graph.softMax(with: output, axis: -1, name: nil)
-        self.inferenceTarget = (tensors: [softMax], operations: [])
+        if softmax {
+            let softMax = graph.softMax(with: output, axis: -1, name: nil)
+            self.inferenceTarget = (tensors: [softMax], operations: [])
+        } else {
+            self.inferenceTarget = (tensors: [output], operations: [])
+        }
         // training
         let loss = lossObject(output, labelsPlaceholder)
         let variables = variableData.map { $0.0 }
