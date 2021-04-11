@@ -103,7 +103,7 @@ public extension MPSGSequential {
     // MARK: - inference
     
     // Encode inference batch to command buffer using double buffering
-    func batchPredict(_ sourceTensorData: MPSGraphTensorData, _ labelsTensorData: MPSGraphTensorData) -> MPSGraphTensorData {
+    func batchPredict(_ sourceTensorData: MPSGraphTensorData, _ labelsTensorData: MPSGraphTensorData, gCorrect: inout Int, batchSize: Int = Hyper.batchSize) -> MPSGraphTensorData {
         let batchSize = labelsTensorData.shape.first!.intValue
         let labelSize = labelsTensorData.shape.last!.intValue
         
@@ -122,7 +122,7 @@ public extension MPSGSequential {
             yLabels.readBytes(&labels, strideBytes: nil)
 
             var ind = 0
-            for _ in 0..<Hyper.batchSize {
+            for _ in 0..<batchSize {
                 var maxIndex = 0
                 var maxValue: Float = 0
                 var correctIndex = 0
@@ -137,7 +137,7 @@ public extension MPSGSequential {
                     ind += 1
                 }
                 if maxIndex == correctIndex {
-//                    gCorrect += 1
+                    gCorrect += 1
                 }
             }
             self.doubleBufferingSemaphore.signal()
@@ -154,7 +154,7 @@ public extension MPSGSequential {
     }
     
     // Encode inference batch to command buffer using double buffering
-    func batchPredictEncode(commandBuffer: MTLCommandBuffer, _ sourceTensorData: MPSGraphTensorData, _ labelsTensorData: MPSGraphTensorData) -> MPSGraphTensorData {
+    func batchPredictEncode(commandBuffer: MTLCommandBuffer, _ sourceTensorData: MPSGraphTensorData, _ labelsTensorData: MPSGraphTensorData, gCorrect: inout Int, batchSize: Int = Hyper.batchSize) -> MPSGraphTensorData {
         let batchSize = labelsTensorData.shape.first!.intValue
         let labelSize = labelsTensorData.shape.last!.intValue
 
@@ -173,7 +173,7 @@ public extension MPSGSequential {
             yLabels.readBytes(&labels, strideBytes: nil)
 
             var ind = 0
-            for _ in 0..<Hyper.batchSize {
+            for _ in 0..<batchSize {
                 var maxIndex = 0
                 var maxValue: Float = 0
                 var correctIndex = 0
@@ -188,7 +188,7 @@ public extension MPSGSequential {
                     ind += 1
                 }
                 if maxIndex == correctIndex {
-//                    gCorrect += 1
+                    gCorrect += 1
                 }
             }
             self.doubleBufferingSemaphore.signal()
