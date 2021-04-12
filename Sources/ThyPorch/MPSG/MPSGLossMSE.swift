@@ -23,7 +23,8 @@ public class MPSGLossMSE: MPSGLoss {
     }
     
     public func callAsFunction(_ output: MPSGraphTensor, _ labels: MPSGraphTensor) -> MPSGraphTensor {
-        let loss = graph.reductionSum(with: output, axis: -1, name: name("_reductionSum_-1"))
+        let square = graph.square(with: output, name: name("_square"))
+        let loss = graph.reductionSum(with: square, axis: -1, name: name("_reductionSum_-1"))
         let mean = graph.division(loss, batchSize, name: name("_division"))
         return mean
     }
