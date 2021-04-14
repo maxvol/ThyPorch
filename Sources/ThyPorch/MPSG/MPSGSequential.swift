@@ -87,6 +87,20 @@ public class MPSGSequential { // : MPSGModel {
         }
     }
     
+    public func load(variableData: [MPSGModel.VariableData]) {
+        let url = getDocumentsDirectory()
+        for variable in variableData {
+            guard let name = variable.name else {
+                continue
+            }
+            if let data = try? Data(contentsOf: url.appendingPathComponent(name), options: []) {
+                let count = data.count / MemoryLayout<Float32>.size
+//                data.getBytes(&variable.data, length:count)
+                // TODO: ...
+            }
+        }
+    }
+    
     func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentsDirectory = paths[0]
