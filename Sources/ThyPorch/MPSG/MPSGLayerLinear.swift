@@ -13,11 +13,12 @@ import MetalPerformanceShadersGraph
 @available(macOS 11, iOS 14, *)
 public class MPSGLayerLinear: MPSGLayer {
     public let graph: MPSGraph
+    public let name: String?
     public private(set) var variableData: [MPSGModel.VariableData] = []
+
     var weightVariableData: MPSGModel.VariableData!
     var biasVariableData: MPSGModel.VariableData!
     let units: Int
-    let name: String?
     
     public init(graph: MPSGraph,
                 weightsShape: Shape,

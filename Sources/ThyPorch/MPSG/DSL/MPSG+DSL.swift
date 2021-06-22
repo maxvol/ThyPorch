@@ -36,11 +36,7 @@ class Test1 {
 //                .IO(10, 128)
 //                "linear0"
 //            }
-            MPSGLayerAny {
-                graph
-                f
-            }
-
+            MPSGLayerReLU(graph: graph, name: "reLU_linear0")
             MPSGLayerAny(graph: graph)
             MPSGLayerAny(graph: graph) { (graph, inputTensor) in graph.dropout(inputTensor, rate: 0.5, name: "do0") }
             MPSGLayerLinear(units: 64) {

@@ -13,6 +13,7 @@ import MetalPerformanceShadersGraph
 @available(macOS 11, iOS 14, *)
 public protocol MPSGLayer {
     var graph: MPSGraph { get }
+    var name: String? { get }
     var variableData: [MPSGModel.VariableData] { get }
     func callAsFunction(_ inputTensor: MPSGraphTensor) throws -> MPSGraphTensor
 //    @available(*, deprecated, renamed: "callAsFunction(MPSGraphTensor)")

@@ -13,11 +13,11 @@ import MetalPerformanceShadersGraph
 @available(macOS 11, iOS 14, *)
 public class MPSGLayerConv2D: MPSGLayer {
     public let graph: MPSGraph
+    public let name: String?
     public private(set) var variableData: [MPSGModel.VariableData]
     let weightVariableData: MPSGModel.VariableData
     let biasVariableData: MPSGModel.VariableData
     let desc: MPSGraphConvolution2DOpDescriptor
-    let name: String?
     
     public init(graph: MPSGraph,
                 weightsShape: Shape,

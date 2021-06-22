@@ -12,8 +12,10 @@ import MetalPerformanceShadersGraph
 
 @available(macOS 11, iOS 14, *)
 public class MPSGLayerAny: MPSGLayer {
-    public var graph: MPSGraph
-    public var variableData: [MPSGModel.VariableData] = []
+    public let graph: MPSGraph
+    public let name: String? = nil
+    public let variableData: [MPSGModel.VariableData] = []
+    
     let builders: [MPSGModel.TensorBuilder]
 
     init(graph: MPSGraph, _ builders: [MPSGModel.TensorBuilder]) {
