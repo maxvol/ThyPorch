@@ -8,59 +8,38 @@
 import MetalPerformanceShadersGraph
 
 @resultBuilder
-public struct MPSGLayerBuilder {
+public struct MPSGLayerAnyBuilder {
     
-//    static func buildBlock(_ components: [MPSGLayer]...) -> [MPSGLayer] {
-//        components.flatMap { $0 }
+//    static func buildBlock(_ graph: MPSGraph, _ name: String?, _ builders: [MPSGModel.TensorBuilder]) -> (MPSGraph, String?, [MPSGModel.TensorBuilder]) {
+//        (graph, name, builders)
 //    }
     
-//    static func buildExpression(_ expression: MPSGLayer) -> [MPSGLayer] {
+//    public static func buildBlock(_ layers: [MPSGLayer]...) -> [MPSGLayer] {
+//        layers.flatMap { $0 }
+//    }
+
+    static func buildBlock(_ graph: MPSGraph, _ builders: MPSGModel.TensorBuilder...) -> (MPSGraph, [MPSGModel.TensorBuilder]) {
+        (graph, builders)
+    }
+
+//    static func buildExpression(_ expression: @escaping MPSGModel.TensorBuilder) -> [MPSGModel.TensorBuilder] {
 //        [expression]
 //    }
 
-    @available(*, unavailable, message: "missing`` field")
-    public static func buildBlock(_ components: [MPSGLayer]...) -> [MPSGLayer] {
-        fatalError()
-    }
+//    @available(*, unavailable, message: "missing`` field")
+//    public static func buildBlock(_ components: [MPSGLayer]...) -> [MPSGLayer] {
+//        fatalError()
+//    }
     
 }
 
-@resultBuilder
-public struct MPSGLayerLinearBuilder {
-    public static func buildBlock(_ graph: MPSGraph,
-                           _ name: String? = nil) -> (MPSGraph, String?) {
-        (graph, name)
-    }
-    public static func buildBlock(_ weightsShape: Shape) -> Shape {
-        weightsShape
-    }
-    public static func buildBlock(_ graph: MPSGraph,
-                           _ weightsShape: Shape,
-                           _ name: String? = nil) -> (MPSGraph, Shape, String?) {
-        (graph, weightsShape, name)
-    }
-    public static func buildBlock(_ graph: MPSGraph,
-                           _ units: Int,
-                           _ name: String? = nil) -> (MPSGraph, Int, String?) {
-        (graph, units, name)
-    }
-}
-
-public extension MPSGLayerLinear {
-    convenience init(weightsShape: Shape, @MPSGLayerLinearBuilder builder: () -> (MPSGraph, String?)) {
-        let (graph, name) = builder()
-        self.init(graph: graph, weightsShape: weightsShape, name: name)
-    }
-    convenience init(_ graph: MPSGraph, _ name: String? = nil, @MPSGLayerLinearBuilder builder: () -> Shape) {
-        let weightsShape = builder()
-        self.init(graph: graph, weightsShape: weightsShape, name: name)
-    }
-    convenience init(@MPSGLayerLinearBuilder builder: () -> (MPSGraph, Shape, String?)) {
-        let (graph, weightsShape, name) = builder()
-        self.init(graph: graph, weightsShape: weightsShape, name: name)
-    }
-    convenience init(@MPSGLayerLinearBuilder builder: () -> (MPSGraph, Int, String?)) {
-        let (graph, units, name) = builder()
-        self.init(graph: graph, units: units, name: name)
+public extension MPSGLayerAny {
+//    convenience init(@MPSGLayerAnyBuilder builder: () -> (MPSGraph, String?, MPSGModel.TensorBuilder)) {
+//        let (graph, name, builders) = builder()
+//        self.init(graph: graph, builders)
+//    }
+    convenience init(@MPSGLayerAnyBuilder builder: () -> (MPSGraph, [MPSGModel.TensorBuilder])) {
+        let (graph, builders) = builder()
+        self.init(graph: graph, builders)
     }
 }

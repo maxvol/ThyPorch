@@ -33,7 +33,7 @@ public class MPSGSequential { // : MPSGModel {
     
     let doubleBufferingSemaphore = DispatchSemaphore(value: 2)
     
-    public init(graph: MPSGraph, inShape: Shape, outShape: Shape, _ layers: [MPSGLayer]) {
+    init(graph: MPSGraph, inShape: Shape, outShape: Shape, _ layers: [MPSGLayer]) {
         self.graph = graph
         self.layers = layers
         let inputTensor =  graph.placeholder(shape: inShape.toArrayNSNumber, name: nil)

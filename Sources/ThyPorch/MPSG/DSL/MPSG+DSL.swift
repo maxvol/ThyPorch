@@ -24,6 +24,7 @@ class Test1 {
     func callAsFunction() {
         let graph = MPSGraph()
 //        var t: MPSGraphTensor!
+        let f: MPSGModel.TensorBuilder = { (graph: MPSGraph, inputTensor: MPSGraphTensor) in graph.reLU(with: inputTensor, name: "reLU_linear0") }
         let m = SequentialModel {
             MPSGLayerLinear(graph: graph, weightsShape: .IO(10, 128), name: "linear0")
             MPSGLayerLinear(weightsShape: .IO(10, 128)) {
@@ -35,12 +36,16 @@ class Test1 {
 //                .IO(10, 128)
 //                "linear0"
 //            }
-            MPSGLayerAny(graph: graph) { (graph, inputTensor) in graph.reLU(with: inputTensor, name: "reLU_linear0") }
-            MPSGLayerAny(graph: graph) { (graph, inputTensor) in graph.dropout(inputTensor, rate: 0.5, name: "do0") }
-            MPSGLayerLinear {
+            MPSGLayerAny {
                 graph
-                64
-                "linear1"
+                f
+            }
+
+            MPSGLayerAny(graph: graph)
+            MPSGLayerAny(graph: graph) { (graph, inputTensor) in graph.dropout(inputTensor, rate: 0.5, name: "do0") }
+            MPSGLayerLinear(units: 64) {
+                graph
+//                "linear1"
             }
         }
     }

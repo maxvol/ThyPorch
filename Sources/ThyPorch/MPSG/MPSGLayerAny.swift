@@ -15,10 +15,14 @@ public class MPSGLayerAny: MPSGLayer {
     public var graph: MPSGraph
     public var variableData: [MPSGModel.VariableData] = []
     let builders: [MPSGModel.TensorBuilder]
-    
-    public init(graph: MPSGraph, _ builders: MPSGModel.TensorBuilder...) {
+
+    init(graph: MPSGraph, _ builders: [MPSGModel.TensorBuilder]) {
         self.graph = graph
         self.builders = builders
+    }
+
+    convenience public init(graph: MPSGraph, _ builders: MPSGModel.TensorBuilder...) {
+        self.init(graph: graph, builders)
     }
     
     public func callAsFunction(_ inputTensor: MPSGraphTensor) -> MPSGraphTensor {
