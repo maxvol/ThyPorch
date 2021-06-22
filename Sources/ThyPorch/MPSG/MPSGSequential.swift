@@ -33,7 +33,7 @@ public class MPSGSequential { // : MPSGModel {
     
     let doubleBufferingSemaphore = DispatchSemaphore(value: 2)
     
-    public init(graph: MPSGraph, inShape: Shape, outShape: Shape, _ layers: MPSGLayer...) {
+    public init(graph: MPSGraph, inShape: Shape, outShape: Shape, _ layers: [MPSGLayer]) {
         self.graph = graph
         self.layers = layers
         let inputTensor =  graph.placeholder(shape: inShape.toArrayNSNumber, name: nil)
@@ -47,6 +47,14 @@ public class MPSGSequential { // : MPSGModel {
         let totalParameterCount = variableData.reduce(0) { r, e in r + e.data.count }
         print("totalParameterCount: \(totalParameterCount)")
         print(graph.debugDescription)
+    }
+    
+    public convenience init(graph: MPSGraph, inShape: Shape, outShape: Shape, _ layers: MPSGLayer...) {
+        self.init(graph: graph, inShape: inShape, outShape: outShape, layers)
+    }
+    
+    public convenience init(graph: MPSGraph, inShape: Shape, outShape: Shape, @MPSGSequentialBuilder _ layers: () -> [MPSGLayer]) {
+        self.init(graph: graph, inShape: inShape, outShape: outShape, layers())
     }
     
     public func add(_ layer: MPSGLayer) {
@@ -89,14 +97,14 @@ public class MPSGSequential { // : MPSGModel {
     
     public func load(variableData: [MPSGModel.VariableData]) {
         let url = getDocumentsDirectory()
-        for variable in variableData {
+        for var variable in variableData {
             guard let name = variable.name else {
                 continue
             }
             if let data = try? Data(contentsOf: url.appendingPathComponent(name), options: []) {
                 let count = data.count / MemoryLayout<Float32>.size
-//                data.getBytes(&variable.data, length:count)
-                // TODO: ...
+//                let pointer = UnsafeMutablePointer<UInt8>(&variable.data)
+//                data.copyBytes(to: pointer, count:count)
             }
         }
     }
