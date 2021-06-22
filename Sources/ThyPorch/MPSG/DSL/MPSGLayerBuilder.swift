@@ -8,7 +8,7 @@
 import MetalPerformanceShadersGraph
 
 @resultBuilder
-struct MPSGLayerBuilder {
+public struct MPSGLayerBuilder {
     
 //    static func buildBlock(_ components: [MPSGLayer]...) -> [MPSGLayer] {
 //        components.flatMap { $0 }
@@ -19,34 +19,34 @@ struct MPSGLayerBuilder {
 //    }
 
     @available(*, unavailable, message: "missing`` field")
-    static func buildBlock(_ components: [MPSGLayer]...) -> [MPSGLayer] {
+    public static func buildBlock(_ components: [MPSGLayer]...) -> [MPSGLayer] {
         fatalError()
     }
     
 }
 
 @resultBuilder
-struct MPSGLayerLinearBuilder {
-    static func buildBlock(_ graph: MPSGraph,
+public struct MPSGLayerLinearBuilder {
+    public static func buildBlock(_ graph: MPSGraph,
                            _ name: String? = nil) -> (MPSGraph, String?) {
         (graph, name)
     }
-    static func buildBlock(_ weightsShape: Shape) -> Shape {
+    public static func buildBlock(_ weightsShape: Shape) -> Shape {
         weightsShape
     }
-    static func buildBlock(_ graph: MPSGraph,
+    public static func buildBlock(_ graph: MPSGraph,
                            _ weightsShape: Shape,
                            _ name: String? = nil) -> (MPSGraph, Shape, String?) {
         (graph, weightsShape, name)
     }
-    static func buildBlock(_ graph: MPSGraph,
+    public static func buildBlock(_ graph: MPSGraph,
                            _ units: Int,
                            _ name: String? = nil) -> (MPSGraph, Int, String?) {
         (graph, units, name)
     }
 }
 
-extension MPSGLayerLinear {
+public extension MPSGLayerLinear {
     convenience init(weightsShape: Shape, @MPSGLayerLinearBuilder builder: () -> (MPSGraph, String?)) {
         let (graph, name) = builder()
         self.init(graph: graph, weightsShape: weightsShape, name: name)

@@ -8,9 +8,9 @@
 import MetalPerformanceShadersGraph
 
 @resultBuilder
-struct MPSGSequentialBuilder {
+public struct MPSGSequentialBuilder {
     
-    static func buildBlock(_ layers: [MPSGLayer]...) -> [MPSGLayer] {
+    public static func buildBlock(_ layers: [MPSGLayer]...) -> [MPSGLayer] {
         layers.flatMap { $0 }
     }
 
@@ -18,7 +18,7 @@ struct MPSGSequentialBuilder {
 //        (inputTensor, layers.flatMap { $0 })
 //    }
 
-    static func buildExpression(_ expression: MPSGLayer) -> [MPSGLayer] {
+    public static func buildExpression(_ expression: MPSGLayer) -> [MPSGLayer] {
         [expression]
     }
 
@@ -36,4 +36,12 @@ struct MPSGSequentialBuilder {
 //    static func buildFinalResult(_ layers: [MPSGLayer]) -> MPSGraphTensor {
 //        fatalError()
 //    }
+}
+
+public extension MPSGSequential {
+    
+    convenience init(graph: MPSGraph, inShape: Shape, outShape: Shape, @MPSGSequentialBuilder _ layers: () -> [MPSGLayer]) {
+        self.init(graph: graph, inShape: inShape, outShape: outShape, layers())
+    }
+    
 }

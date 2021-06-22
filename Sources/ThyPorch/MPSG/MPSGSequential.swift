@@ -53,10 +53,6 @@ public class MPSGSequential { // : MPSGModel {
         self.init(graph: graph, inShape: inShape, outShape: outShape, layers)
     }
     
-    public convenience init(graph: MPSGraph, inShape: Shape, outShape: Shape, @MPSGSequentialBuilder _ layers: () -> [MPSGLayer]) {
-        self.init(graph: graph, inShape: inShape, outShape: outShape, layers())
-    }
-    
     public func add(_ layer: MPSGLayer) {
         self.layers.append(layer)
     }
