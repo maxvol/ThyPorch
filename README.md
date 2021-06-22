@@ -1,4 +1,4 @@
 # ThyPorch
 
-Facade for iOS14+ ML frameworks.
+Façade for iOS14+ ML frameworks.
 
