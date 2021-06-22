@@ -43,36 +43,6 @@ class Test1 {
                 "linear1"
             }
         }
-        
-        
-         let input_shape = 10
-         let output_shape = 10
-         
-         let model = MPSGSequential(graph: graph,
-                                    inShape: .IO(16, input_shape),
-                                    outShape: .IO(16, output_shape),
-                                    //            MPSGLayerAny(graph: graph, debug),
-                                                MPSGLayerLinear(graph: graph, weightsShape: .IO(input_shape, 128), name: "linear0"),
-                                    //            MPSGLayerAny(graph: graph, debug),
-                                                MPSGLayerAny(graph: graph) { (graph, inputTensor) in graph.reLU(with: inputTensor, name: "reLU_linear0") },
-                                    //            MPSGLayerAny(graph: graph, debug),
-                                                MPSGLayerAny(graph: graph) { (graph, inputTensor) in graph.dropout(inputTensor, rate: 0.5, name: "do0") },
-                                    //            MPSGLayerAny(graph: graph, debug),
-                                                MPSGLayerLinear(graph: graph, units: 64, name: "linear1"),
-                                    //            MPSGLayerAny(graph: graph, debug),
-                                                MPSGLayerAny(graph: graph) { (graph, inputTensor) in graph.reLU(with: inputTensor, name: "reLU_linear1") },
-                                    //            MPSGLayerAny(graph: graph, debug),
-                                                MPSGLayerAny(graph: graph) { (graph, inputTensor) in graph.dropout(inputTensor, rate: 0.5, name: "do1") },
-                                    //            MPSGLayerAny(graph: graph, debug),
-                                                MPSGLayerLinear(graph: graph, units: output_shape, name: "linear2")//,
-                                    //            MPSGLayerAny(graph: graph, debug) //,
-                                    //            MPSGLayerAny(graph: graph) { (graph, inputTensor) in graph.softMax(with: inputTensor, axis: -1, name: "softmax_linear2") },
-                                    //            MPSGLayerAny(graph: graph, debug)
-         )
-         let lossObject = MPSGLossCCE(graph: graph)
-         let sgd = MPSGOptimizerSGD(graph: graph)
-         model.compile(lossObject: lossObject, optimizer: sgd)
-         
     }
 }
 
